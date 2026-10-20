@@ -28,7 +28,7 @@ $flash = getFlash();
                 <li class="nav-item"><a class="nav-link" href="contratos_listar.php">Contratos</a></li>
                 <li class="nav-item"><a class="nav-link" href="pagos_listar.php">Recibos</a></li>
                 <li class="nav-item"><a class="nav-link" href="reportes.php">Reportes</a></li>
-                <?php if (($_SESSION['usuario_rol'] ?? '') === 'administrador'): ?>
+                <?php if (esAdmin()): ?>
                     <li class="nav-item"><a class="nav-link" href="usuarios_listar.php">Usuarios</a></li>
                 <?php endif; ?>
             </ul>

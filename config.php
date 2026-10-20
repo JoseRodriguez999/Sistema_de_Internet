@@ -318,5 +318,19 @@ function badgeConexion(?string $tipo): string
 // ============================================================
 function esAdmin(): bool
 {
-    return ($_SESSION['usuario_rol'] ?? '') === 'administrador';
+    // El superusuario tiene todas las funciones del administrador
+    return in_array($_SESSION['usuario_rol'] ?? '', ['administrador', 'superusuario'], true);
+}
+
+function esSuperusuarioSesion(): bool
+{
+    return ($_SESSION['usuario_rol'] ?? '') === 'superusuario';
+}
+
+/** Devuelve true si el usuario indicado (por id) es superusuario (cuenta protegida). */
+function usuarioEsSuperusuario(PDO $pdo, int $id): bool
+{
+    $stmt = $pdo->prepare('SELECT rol FROM usuarios WHERE id = ?');
+    $stmt->execute([$id]);
+    return $stmt->fetchColumn() === 'superusuario';
 }

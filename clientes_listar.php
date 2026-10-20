@@ -204,6 +204,11 @@ require __DIR__ . '/includes/header.php';
                        class="btn btn-sm btn-outline-danger"
                        onclick="return confirm('¿Dar de baja a este cliente? Sus contratos se cerrarán, pero el historial de pagos se conserva.');">Baja</a>
                 <?php endif; ?>
+                <?php if (esSuperusuarioSesion()): ?>
+                    <a href="clientes_eliminar.php?id=<?= (int) $c['id'] ?>&accion=eliminar"
+                       class="btn btn-sm btn-danger"
+                       onclick="return confirm('ELIMINAR DEFINITIVAMENTE a este cliente y TODO su historial (contratos y pagos). Esta acción no se puede deshacer. ¿Continuar?');">Eliminar</a>
+                <?php endif; ?>
             </td>
         </tr>
         <?php endforeach; ?>

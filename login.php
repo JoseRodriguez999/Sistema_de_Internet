@@ -69,9 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit" class="btn btn-isp w-100">Entrar</button>
     </form>
 
-    <p class="text-muted mt-3 mb-0" style="font-size: 0.85rem;">
-        Usuario de prueba: admin@ispguate.com / admin123
-    </p>
+   
 </div>
 </body>
 </html>

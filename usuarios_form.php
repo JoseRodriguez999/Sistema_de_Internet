@@ -1,6 +1,6 @@
 <?php
 require __DIR__ . '/config.php';
-requireRole('administrador');
+requireRole(['administrador', 'superusuario']);
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : null;
 $usuario = ['nombre' => '', 'correo' => '', 'rol' => 'operador'];
@@ -12,6 +12,12 @@ if ($id) {
     $existente = $stmt->fetch();
     if (!$existente) {
         setFlash('error', 'Usuario no encontrado.');
+        header('Location: usuarios_listar.php');
+        exit;
+    }
+    // La cuenta de superusuario no puede ser editada desde aquí (protege su rol)
+    if ($existente['rol'] === 'superusuario') {
+        setFlash('error', 'La cuenta de superusuario no puede ser modificada.');
         header('Location: usuarios_listar.php');
         exit;
     }

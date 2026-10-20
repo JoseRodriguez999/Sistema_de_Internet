@@ -10,7 +10,7 @@ foreach ($pdo->query("SELECT * FROM clientes WHERE estado != 'inactivo' ORDER BY
     if (estadoCuentaCliente($pdo, (int) $c['id'])['estado'] === 'Moroso') $clientesMorosos[] = $c;
 }
 
-$esAdmin = ($_SESSION['usuario_rol'] ?? '') === 'administrador';
+$esAdmin = esAdmin();   // incluye administrador y superusuario
 
 $ingresosPorMes = [];
 if ($esAdmin) {

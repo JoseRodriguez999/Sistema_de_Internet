@@ -20,6 +20,30 @@ if (!$cliente) {
     exit;
 }
 
+// ---- Eliminación definitiva (solo superusuario) ----
+// Borra al cliente y TODO su historial (contratos y pagos). No se puede deshacer.
+if ($accion === 'eliminar') {
+    if (!esSuperusuarioSesion()) {
+        setFlash('error', 'Solo el superusuario puede eliminar clientes de forma definitiva.');
+        header('Location: clientes_listar.php');
+        exit;
+    }
+    $pdo->beginTransaction();
+    // Pagos de todos los contratos del cliente
+    $pdo->prepare("DELETE pg FROM pagos pg
+                   JOIN contratos co ON co.id = pg.contrato_id
+                   WHERE co.cliente_id = ?")->execute([$id]);
+    // Contratos del cliente
+    $pdo->prepare("DELETE FROM contratos WHERE cliente_id = ?")->execute([$id]);
+    // Cliente
+    $pdo->prepare("DELETE FROM clientes WHERE id = ?")->execute([$id]);
+    $pdo->commit();
+
+    setFlash('ok', 'Cliente «' . $cliente['nombre'] . '» eliminado definitivamente junto con su historial.');
+    header('Location: clientes_listar.php');
+    exit;
+}
+
 if ($accion === 'reactivar') {
     if (!esAdmin()) {
         setFlash('error', 'Solo el administrador puede reactivar clientes.');
